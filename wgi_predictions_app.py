@@ -102,18 +102,17 @@ else:
     tot_ge_sc = subtot_sc * 0.4
 
 # --- Previous Year Inputs ---
-st.session_state.competed = "Yes"
+#st.session_state.competed = "Yes"
 with col1:
     prv_class = st.selectbox("Previous Class", classes, index=None)
     st.radio("Did this guard compete last season?", ["No", "Yes"], key="competed_select", on_change=update_previous, horizontal=True)
-
-if st.session_state.competed == "Yes":
-    with col1:
-        prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Finals"], horizontal=True)
-        prv_fin_score = st.number_input("Previous Final Score", min_value=0.0, max_value=100.0, format="%0.2f")
-        prv_fin_place = st.number_input("Previous Final Placement", min_value=1, max_value=50, step=1)
-else:
-    prv_wc_round, prv_fin_score, prv_fin_place = 0, 0.0, 0
+    if st.session_state.competed == "Yes":
+        with col1:
+            prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Finals"], horizontal=True)
+            prv_fin_score = st.number_input("Previous Final Score", min_value=0.0, max_value=100.0, format="%0.2f")
+            prv_fin_place = st.number_input("Previous Final Placement", min_value=1, max_value=50, step=1)
+    else:
+        prv_wc_round, prv_fin_score, prv_fin_place = 0, 0.0, 0
 
 # --- Seed Score Calculation ---
 week_offsets = {"1": 9.0, "2": 7.5, "3": 6.0, "4": 4.5, "5": 3.0, "6": 1.5, "7": 0.0}
