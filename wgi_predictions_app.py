@@ -53,30 +53,43 @@ def train_models(data):
 data = load_data()
 score_model, finalist_model = train_models(data)
 
+if "user_inputs" not in st.session_state:
+    st.session_state.user_inputs = {}
+
+def update_inputs(key, value):
+    st.session_state.user_inputs[key] = value
+
 # UI Inputs
 classes = ['Independent A', 'Scholastic A', 'Independent Open', 'Scholastic Open', 'Independent World', 'Scholastic World']
 
-with st.sidebar:
-    class_25 = st.selectbox('2025 Guard Class', classes, key='class_25')
-    round_num = 1 if st.radio("Show Round", ['Prelims', 'Finals'], key='round') == 'Prelims' else 3
+col1, col2, col3 = st.columns((1, 1, 1))
+with col1:
+    class_25 = st.selectbox("2025 Class", classes, index=None, on_change=update_inputs, args=("class_25", class_25))
+    round_2025 = st.radio("Round", ["Prelims", "Finals"], on_change=update_inputs, args=("round", round_2025))
+
+with col2:
     week = st.selectbox("What show week did the score that you're entering occur in?", 
                       ['Week 1: 2/8-9','Week 2: 2/15-16', 'Week 3: 2/22-23', 'Week 4: 3/1-2',
                        'Week 5: 3/8-9', 'Week 6: 3/15-16', 'Week 7: 3/22-23'], 
                       placeholder='Week 1: 2/8-9', index=None)
-    caption_choice = st.radio('Enter caption scores?', ['Yes', 'No'], key='caption')
+    captions = st.radio("Enter Caption Scores?", ["Yes", "No"], on_change=update_inputs, args=("captions", captions))
 
-# Caption Inputs
-ea_tot_sc, ma_tot_sc, da_tot_sc, tot_ge_sc = 0, 0, 0, 0
-if caption_choice == 'Yes':
-    ea_tot_sc = st.number_input("Equipment Analysis Total Score", min_value=0.0, max_value=20.0, format="%0.3f")
-    ma_tot_sc = st.number_input("Movement Analysis Total Score", min_value=0.0, max_value=20.0, format="%0.3f")
-    da_tot_sc = st.number_input("Design Analysis Total Score", min_value=0.0, max_value=20.0, format="%0.3f")
-    tot_ge_sc = st.number_input("Total GE Score", min_value=0.0, max_value=40.0, format="%0.3f")
+# Caption Inputs (only show if needed)
+if st.session_state.user_inputs.get("captions") == "Yes":
+    with col1:
+        ea_tot_sc = st.number_input("EA Score", min_value=0.0, max_value=20.0, format="%0.2f")
+        da_tot_sc = st.number_input("DA Score", min_value=0.0, max_value=20.0, format="%0.2f")
+    with col2:
+        ma_tot_sc = st.number_input("MA Score", min_value=0.0, max_value=20.0, format="%0.2f")
+        tot_ge_sc = st.number_input("GE Score", min_value=0.0, max_value=40.0, format="%0.2f")
     subtot_sc = ea_tot_sc + ma_tot_sc + da_tot_sc + tot_ge_sc
 else:
-    subtot_sc = st.number_input("Subtotal Score", min_value=0.0, max_value=100.0, format="%0.3f")
-
-st.write(f'Total Subtotal score: {subtot_sc:.3f}')
+    with col1:
+        subtot_sc = st.number_input("Subtotal Score", min_value=0.0, max_value=100.0, format="%0.2f")
+    ea_tot_sc = subtot_sc * 0.2
+    ma_tot_sc = subtot_sc * 0.2
+    da_tot_sc = subtot_sc * 0.2
+    tot_ge_sc = subtot_sc * 0.4
 
 # Calculate Seed Score
 if week == 'Week 1: 2/8-9':
@@ -93,6 +106,9 @@ if week == 'Week 6: 3/15-16':
     seed = subtot_sc + 1.5
 if week == 'Week 7: 3/22-23':
     seed = subtot_sc
+
+st.write(f'Total Score that you entered: {subtot_sc:.3f}')
+st.write(f'Seeding score based off subtotal score: {seed:.3f}')
 
 # Previous Year Inputs
 class_24 = st.selectbox('2024 Guard Class', classes, key='class_24')
