@@ -108,7 +108,7 @@ if week == 'Week 7: 3/22-23':
     seed = subtot_sc
 
 st.write(f'Total Score that you entered: {subtot_sc:.3f}')
-st.write('Seeding score based off subtotal score:', seed)
+#st.write('Seeding score based off subtotal score:', seed)
 
 # Previous Year Inputs
 class_24 = st.selectbox('2024 Guard Class', classes, key='class_24')
