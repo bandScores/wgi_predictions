@@ -79,7 +79,7 @@ with col1:
 
 with col2:
     st.selectbox("Show Week", weeks, key="week_select", index=None, on_change=update_week)
-    st.radio("Enter Caption Scores?", ["Yes", "No"], key="captions_select", on_change=update_captions)
+    st.radio("Enter Caption Scores?", ["No", "Yes"], key="captions_select", on_change=update_captions)
 
 # --- Caption Inputs ---
 if st.session_state.captions == "Yes":
@@ -101,7 +101,7 @@ else:
 # --- Previous Year Inputs ---
 with col1:
     prv_class = st.selectbox("Previous Class", classes, index=None)
-    prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Finals"], horizontal=True)
+    prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Semifinals", "Finals"], horizontal=True)
 with col2:
     prv_fin_score = st.number_input("Previous Final Score", min_value=0.0, max_value=100.0, format="%0.2f")
     prv_fin_place = st.number_input("Previous Final Placement", min_value=1, max_value=50, step=1)
