@@ -109,9 +109,15 @@ with col1:
     st.radio("Did this guard compete last season?", ["Yes", "No"], key="competed_select", on_change=update_previous, horizontal=True)
     if st.session_state.competed == "Yes":
         with col1:
-            prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Finals"], horizontal=True)
+            prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Semifinals", "Finals"], horizontal=True)
             prv_fin_score = st.number_input("Previous Final Score", min_value=0.0, max_value=100.0, format="%0.2f")
             prv_fin_place = st.number_input("Previous Final Placement", min_value=1, max_value=50, step=1)
+            if prv_wc_round == "Prelims":
+                prv_wc_round = 1
+            if prv_wc_round == "Semifinals":
+                prv_wc_round = 2
+            if prv_wc_round == "Finals":
+                prv_wc_round = 3
     else:
         prv_wc_round, prv_fin_score, prv_fin_place = 0, 0.0, 0
 
@@ -128,7 +134,7 @@ if st.button("Predict Final Score"):
         'EA_Tot_Sc': ea_tot_sc, 'MA_Tot_Sc': ma_tot_sc, 'DA_Tot_Sc': da_tot_sc,
         'Tot_GE_Sc': tot_ge_sc, 'Subtot_Sc': subtot_sc, 'Seed Score': seed,
         'Prv Class': classes.index(prv_class) + 1 if prv_class else 0,
-        'Prv WC Round': 1 if prv_wc_round == "Prelims" else 3,
+        'Prv WC Round': prv_wc_round,
         'Prv Fin Score': prv_fin_score, 'Prv Fin Place': prv_fin_place
     }])
 
