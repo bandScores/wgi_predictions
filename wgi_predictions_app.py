@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import xgboost as xgb
 
+# --- Set Page Layout ---
+st.set_page_config(layout="wide")
+
 # --- Load Data & Models ---
 @st.cache_data
 def load_data():
@@ -41,9 +44,6 @@ def load_models():
     return model, finalist_model
 
 model, finalist_model = load_models()
-
-# --- Set Page Layout ---
-st.set_page_config(layout="wide")
 
 # --- Initialize session_state Defaults ---
 if "class_25" not in st.session_state:
