@@ -35,6 +35,7 @@ params = {
 }
 
 # Train the model
+st.cache_resource()
 model = xgb.train(params, dtrain, num_boost_round=100)
 my_bar.progress(40, text="Loading progress")
 
@@ -63,6 +64,7 @@ fin_params = {
 'verbosity': 0
 }
 
+st.cache_resource()
 finalist_model = xgb.train(params, dtrain_fin, num_boost_round=100)
 my_bar.progress(100, text="Loading progress")
 
