@@ -84,11 +84,11 @@ with col2:
 # --- Caption Inputs ---
 if st.session_state.captions == "Yes":
     with col1:
-        ea_tot_sc = st.number_input("EA Score", min_value=0.0, max_value=20.0, format="%0.2f")
-        da_tot_sc = st.number_input("DA Score", min_value=0.0, max_value=20.0, format="%0.2f")
+        ea_tot_sc = st.number_input("Equipment Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
+        da_tot_sc = st.number_input("Design Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
     with col2:
-        ma_tot_sc = st.number_input("MA Score", min_value=0.0, max_value=20.0, format="%0.2f")
-        tot_ge_sc = st.number_input("GE Score", min_value=0.0, max_value=40.0, format="%0.2f")
+        ma_tot_sc = st.number_input("Movement Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
+        tot_ge_sc = st.number_input("Total GE Score (out of 40 points)", min_value=0.0, max_value=40.0, format="%0.2f")
     subtot_sc = ea_tot_sc + ma_tot_sc + da_tot_sc + tot_ge_sc
 else:
     with col1:
@@ -101,10 +101,16 @@ else:
 # --- Previous Year Inputs ---
 with col1:
     prv_class = st.selectbox("Previous Class", classes, index=None)
-    prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Semifinals", "Finals"], horizontal=True)
-with col2:
-    prv_fin_score = st.number_input("Previous Final Score", min_value=0.0, max_value=100.0, format="%0.2f")
-    prv_fin_place = st.number_input("Previous Final Placement", min_value=1, max_value=50, step=1)
+    st.radio("Did this guard compete last season?", ["Yes", "No"], key="competed_select", on_change=update_competed, horizontal=True)
+
+if st.session_state.competed_last_season == "Yes":
+    with col1:
+        prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Finals"], horizontal=True)
+    with col2:
+        prv_fin_score = st.number_input("Previous Final Score", min_value=0.0, max_value=100.0, format="%0.2f")
+        prv_fin_place = st.number_input("Previous Final Placement", min_value=1, max_value=50, step=1)
+else:
+    prv_wc_round, prv_fin_score, prv_fin_place = 0, 0.0, 0
 
 # --- Seed Score Calculation ---
 week_offsets = {"1": 9.0, "2": 7.5, "3": 6.0, "4": 4.5, "5": 3.0, "6": 1.5, "7": 0.0}
