@@ -6,14 +6,14 @@ import xgboost as xgb
 
 st.write("Loading model and data.... this may take a few minutes...")
 
-@st.cache_data(ttl=3600)
-def load_data():
-   data = pd.read_csv('wgi_train.csv')
-   return data
-st.write(data)
+#@st.cache_data(ttl=3600)
+#def load_data():
+data = pd.read_csv('wgi_train.csv')
+   #return data
+#st.write(data)
 
 @st.cache_resource
-def load_model():
+def load_model(data):
             model_data = data[['ID', 'Round_Numb','Class Numb',
             'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
             'Subtot_Sc', 'Seed Score',
