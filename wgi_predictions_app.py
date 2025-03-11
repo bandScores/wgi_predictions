@@ -79,11 +79,11 @@ weeks = ['Week 1: 2/8-9', 'Week 2: 2/15-16', 'Week 3: 2/22-23', 'Week 4: 3/1-2',
 
 col1, col2, col3 = st.columns((1, 1, 1))
 with col1:
-    st.selectbox("2025 Class", classes, key="class_select", index=None, on_change=update_class)
-    st.radio("Round", ["Prelims", "Finals"], key="round_select", on_change=update_round)
+    st.selectbox("Guard's competing class in 2025 season", classes, key="class_select", index=None, on_change=update_class)
+    st.radio("Show Round the score is from", ["Prelims", "Finals"], key="round_select", on_change=update_round)
 
 with col2:
-    st.selectbox("Show Week", weeks, key="week_select", index=None, on_change=update_week)
+    st.selectbox("Show Week that the score is from", weeks, key="week_select", index=None, on_change=update_week)
     st.radio("Enter Caption Scores?", ["No", "Yes"], key="captions_select", on_change=update_captions)
 
 # --- Caption Inputs ---
@@ -115,12 +115,12 @@ with col2:
 with col1:
     prv_class = st.selectbox("Previous Class", classes, index=None)
 with col2:
-    st.radio("Did this guard compete last season?", ["Yes", "No"], key="competed_select", on_change=update_previous, horizontal=True)
+    st.radio("Did this guard compete at the 2024 World Championships?", ["Yes", "No"], key="competed_select", on_change=update_previous, horizontal=True)
     if st.session_state.competed == "Yes":
         with col1:
-            prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Semifinals", "Finals"], horizontal=True)
-            prv_fin_score = st.number_input("Previous Final Score", min_value=0.0, max_value=100.0, format="%0.2f")
-            prv_fin_place = st.number_input("Previous Final Placement", min_value=1, max_value=50, step=1)
+            prv_wc_round = st.radio("The furthest round that the guard advanced to at the 2024 World Championships", ["Prelims", "Semifinals", "Finals"], horizontal=True)
+            prv_fin_score = st.number_input("The guard's final score at the 2024 World Championships", min_value=0.0, max_value=100.0, format="%0.2f")
+            prv_fin_place = st.number_input("The guard's overall placement in the furthest round at the 2024 World Championships", min_value=1, max_value=50, step=1)
             if prv_wc_round == "Prelims":
                 prv_wc_round = 1
             if prv_wc_round == "Semifinals":
