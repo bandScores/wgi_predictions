@@ -64,8 +64,8 @@ classes = ['Independent A', 'Scholastic A', 'Independent Open', 'Scholastic Open
 
 col1, col2, col3 = st.columns((1, 1, 1))
 with col1:
-    class_25 = st.selectbox("2025 Class", classes, index=None, on_change=update_inputs, args=("class_25", class_25))
-    round_2025 = st.radio("Round", ["Prelims", "Finals"], on_change=update_inputs, args=("round", round_2025))
+    class_25 = st.selectbox("2025 Class", classes, index=None, on_change=update_inputs)
+    round_2025 = st.radio("Round", ["Prelims", "Finals"], on_change=update_inputs)
 
 with col2:
     week = st.selectbox("What show week did the score that you're entering occur in?", 
