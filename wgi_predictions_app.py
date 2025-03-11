@@ -188,4 +188,3 @@ if st.button("Predict Final Score"):
     st.subheader(f"Odds of Making Finals at World Championships: {finalist_percentage:.2f}%" if finalist_model else "Error: Model not loaded.")
 
 
-
