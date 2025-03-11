@@ -72,7 +72,7 @@ with col2:
                       ['Week 1: 2/8-9','Week 2: 2/15-16', 'Week 3: 2/22-23', 'Week 4: 3/1-2',
                        'Week 5: 3/8-9', 'Week 6: 3/15-16', 'Week 7: 3/22-23'], 
                       placeholder='Week 1: 2/8-9', index=None)
-    captions = st.radio("Enter Caption Scores?", ["Yes", "No"], on_change=update_inputs, args=("captions", captions))
+    captions = st.radio("Enter Caption Scores?", ["Yes", "No"], on_change=update_inputs)
 
 # Caption Inputs (only show if needed)
 if st.session_state.user_inputs.get("captions") == "Yes":
