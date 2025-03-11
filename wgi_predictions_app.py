@@ -81,8 +81,6 @@ col1, col2, col3 = st.columns((1, 1, 1))
 with col1:
     st.selectbox("Guard's competing class in 2025 season", classes, key="class_select", index=None, on_change=update_class)
     st.radio("Show Round the score is from", ["Prelims", "Finals"], key="round_select", on_change=update_round)
-
-with col2:
     st.selectbox("Show Week that the score is from", weeks, key="week_select", index=None, on_change=update_week)
     st.radio("Enter Caption Scores?", ["No", "Yes"], key="captions_select", on_change=update_captions)
 
@@ -91,14 +89,10 @@ if st.session_state.captions == "Yes":
     with col1:
         ea_tot_sc = st.number_input("Equipment Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
         da_tot_sc = st.number_input("Design Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
-    with col2:
         ma_tot_sc = st.number_input("Movement Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
         tot_ge_sc = st.number_input("Total GE Score (out of 40 points)", min_value=0.0, max_value=40.0, format="%0.2f")
     subtot_sc = ea_tot_sc + ma_tot_sc + da_tot_sc + tot_ge_sc
-    with col1:
-        st.write('Total Subtotal score: ', "{:.3f}".format(subtot_sc))
-    with col2:
-        st.write('')
+    st.write('Total Subtotal score: ', "{:.3f}".format(subtot_sc))
 else:
     with col1:
         subtot_sc = st.number_input("Subtotal Score", min_value=0.0, max_value=100.0, format="%0.2f")
@@ -106,15 +100,11 @@ else:
     ma_tot_sc = subtot_sc * 0.2
     da_tot_sc = subtot_sc * 0.2
     tot_ge_sc = subtot_sc * 0.4
-    with col2:
-        st.write('\n\n\n\n\n')
 
 # --- Previous Year Inputs ---
-with col2:
-    st.write('')
+
 with col1:
-    prv_class = st.selectbox("Previous Class", classes, index=None)
-with col2:
+    prv_class = st.selectbox("Guard's competing class in 2024 season", classes, index=None)
     st.radio("Did this guard compete at the 2024 World Championships?", ["Yes", "No"], key="competed_select", on_change=update_previous, horizontal=True)
     if st.session_state.competed == "Yes":
         with col1:
