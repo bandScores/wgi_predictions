@@ -97,6 +97,8 @@ if st.session_state.captions == "Yes":
     subtot_sc = ea_tot_sc + ma_tot_sc + da_tot_sc + tot_ge_sc
     with col1:
         st.write('Total Subtotal score: ', "{:.3f}".format(subtot_sc))
+    with col2:
+        st.write('')
 else:
     with col1:
         subtot_sc = st.number_input("Subtotal Score", min_value=0.0, max_value=100.0, format="%0.2f")
@@ -104,8 +106,12 @@ else:
     ma_tot_sc = subtot_sc * 0.2
     da_tot_sc = subtot_sc * 0.2
     tot_ge_sc = subtot_sc * 0.4
+    with col2:
+        st.write('')
 
 # --- Previous Year Inputs ---
+with col2:
+    st.write('')
 with col1:
     prv_class = st.selectbox("Previous Class", classes, index=None)
     st.radio("Did this guard compete last season?", ["Yes", "No"], key="competed_select", on_change=update_previous, horizontal=True)
