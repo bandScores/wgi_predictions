@@ -106,7 +106,7 @@ else:
 # --- Previous Year Inputs ---
 with col1:
     prv_class = st.selectbox("Previous Class", classes, index=None)
-    st.radio("Did this guard compete last season?", ["No", "Yes"], key="competed_select", on_change=update_previous, horizontal=True)
+    st.radio("Did this guard compete last season?", ["Yes", "No"], key="competed_select", on_change=update_previous, horizontal=True)
     if st.session_state.competed == "Yes":
         with col1:
             prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Finals"], horizontal=True)
