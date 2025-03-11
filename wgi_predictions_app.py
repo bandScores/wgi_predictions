@@ -27,7 +27,7 @@ if st.button("Click here to get started and load the model & data"):
             'Subtot_Sc', 'Seed Score',
             'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place',
             'Fin Score']]
-            my_bar = st.progress(10, text="Loading progress")
+            my_bar.progress(10, text="Loading progress")
             
             model_data = model_data.dropna()
             X = model_data.iloc[:,1:-1]
@@ -36,7 +36,7 @@ if st.button("Click here to get started and load the model & data"):
             
             dtrain = xgb.DMatrix(X_train, label=y_train)
             dtest = xgb.DMatrix(X_test, label=y_test)
-            my_bar = st.progress(20, text="Loading progress")
+            my_bar.progress(20, text="Loading progress")
             
             # Set the parameters for XGBoost
             params = {
@@ -49,7 +49,7 @@ if st.button("Click here to get started and load the model & data"):
             
             # Train the model
             model = xgb.train(params, dtrain, num_boost_round=100)
-            my_bar = st.progress(40, text="Loading progress")
+            my_bar.progress(40, text="Loading progress")
             
             fin_data = data[['ID', 'Round_Numb','Class Numb',
             'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
@@ -61,11 +61,11 @@ if st.button("Click here to get started and load the model & data"):
             X_fin = fin_data.iloc[:,1:-1]
             y_fin = fin_data.iloc[:, -1]
             X_train_fin, X_test_fin, y_train_fin, y_test_fin = train_test_split(X_fin, y_fin, test_size=0.05, random_state=15)
-            my_bar = st.progress(60, text="Loading progress")
+            my_bar.progress(60, text="Loading progress")
             
             dtrain_fin = xgb.DMatrix(X_train_fin, label=y_train_fin)
             dtest_fin = xgb.DMatrix(X_test_fin, label=y_test_fin)
-            my_bar = st.progress(80, text="Loading progress")
+            my_bar.progress(80, text="Loading progress")
             
             # Set the parameters for XGBoost
             fin_params = {
@@ -77,7 +77,7 @@ if st.button("Click here to get started and load the model & data"):
             }
             
             finalist_model = xgb.train(params, dtrain_fin, num_boost_round=100)
-            my_bar = st.progress(100, text="Loading progress")
+            my_bar.progress(100, text="Loading progress")
 
 # st.title("WGI Predictions App")
 # st.write("This app shows recaps for Bands of America events from the 2024 season. Use the drop down selectors to filter by event or show round, or leave them empty to view all scores. Click on a column header to cycle through sorting options. When hovering over a column header, click the hamburger menu on the right to view more filtering options. \n")
