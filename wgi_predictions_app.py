@@ -68,6 +68,9 @@ def update_week():
 def update_captions():
     st.session_state.captions = st.session_state.captions_select
 
+def update_previous():
+    st.session_state.competed_last_season = st.session_state.competed_select
+
 # --- UI Elements ---
 classes = ['Independent A', 'Scholastic A', 'Independent Open', 'Scholastic Open', 'Independent World', 'Scholastic World']
 weeks = ['Week 1: 2/8-9', 'Week 2: 2/15-16', 'Week 3: 2/22-23', 'Week 4: 3/1-2', 'Week 5: 3/8-9', 'Week 6: 3/15-16', 'Week 7: 3/22-23']
@@ -101,7 +104,7 @@ else:
 # --- Previous Year Inputs ---
 with col1:
     prv_class = st.selectbox("Previous Class", classes, index=None)
-    st.radio("Did this guard compete last season?", ["Yes", "No"], key="competed_select", on_change=update_competed, horizontal=True)
+    st.radio("Did this guard compete last season?", ["Yes", "No"], key="competed_select", on_change=update_previous, horizontal=True)
 
 if st.session_state.competed_last_season == "Yes":
     with col1:
