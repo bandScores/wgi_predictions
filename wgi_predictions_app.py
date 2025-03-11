@@ -90,11 +90,11 @@ with row_input[1]:
 row_input = st.columns((1,1,1))
 if choice == 'Yes':
     with row_input[0]:
-        ea_tot_sc = st.number_input("Equipment Analysis Total Score", min_value=0.0, max_value=20.0, format="%0.3f")
-        da_tot_sc = st.number_input("Design Analysis Total Score", min_value=0.0, max_value=20.0, format="%0.3f")
+        ea_tot_sc = st.number_input("Equipment Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.3f")
+        da_tot_sc = st.number_input("Design Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.3f")
     with row_input[1]:
-        ma_tot_sc = st.number_input("Movement Analysis Total Score", min_value=0.0, max_value=20.0, format="%0.3f")
-        tot_ge_sc = st.number_input("Total GE Score", min_value=0.0, max_value=40.0, format="%0.3f")
+        ma_tot_sc = st.number_input("Movement Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.3f")
+        tot_ge_sc = st.number_input("Total GE Score (out of 40 points)", min_value=0.0, max_value=40.0, format="%0.3f")
     subtot_sc = ea_tot_sc + ma_tot_sc + da_tot_sc + tot_ge_sc
     st.write('Total Subtotal score: ', "{:.3f}".format(subtot_sc))
     
