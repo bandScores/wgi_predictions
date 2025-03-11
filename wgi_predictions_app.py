@@ -53,9 +53,6 @@ def train_models(data):
 data = load_data()
 score_model, finalist_model = train_models(data)
 
-# --- Set Page Layout ---
-st.set_page_config(layout="wide")
-
 # --- Initialize session_state Defaults ---
 if "class_25" not in st.session_state:
     st.session_state.class_25 = None
