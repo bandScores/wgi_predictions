@@ -4,58 +4,6 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 
-data = pd.read_csv('wgi_train.csv')
-model_data = data[['ID', 'Round_Numb','Class Numb',
-                  'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
-                  'Subtot_Sc', 'Seed Score',
-                  'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place',
-                  'Fin Score']]
-
-model_data = model_data.dropna()
-X = model_data.iloc[:,1:-1]
-y = model_data.iloc[:, -1]
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05, random_state=15)
-
-dtrain = xgb.DMatrix(X_train, label=y_train)
-dtest = xgb.DMatrix(X_test, label=y_test)
-
-# Set the parameters for XGBoost
-params = {
-    'objective': 'reg:squarederror',
-    'max_depth': 6,
-    'learning_rate': 0.2,
-    'n_estimators': 100,
-    'verbosity': 0
-}
-
-# Train the model
-model = xgb.train(params, dtrain, num_boost_round=100)
-
-fin_data = data[['ID', 'Round_Numb','Class Numb',
-                  'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
-                  'Subtot_Sc', 'Seed Score',
-                  'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place',
-                  'Finalist']]
-
-fin_data = fin_data.dropna()
-X_fin = fin_data.iloc[:,1:-1]
-y_fin = fin_data.iloc[:, -1]
-X_train_fin, X_test_fin, y_train_fin, y_test_fin = train_test_split(X_fin, y_fin, test_size=0.05, random_state=15)
-
-dtrain_fin = xgb.DMatrix(X_train_fin, label=y_train_fin)
-dtest_fin = xgb.DMatrix(X_test_fin, label=y_test_fin)
-
-# Set the parameters for XGBoost
-fin_params = {
-    'objective': 'reg:squarederror',
-    'max_depth': 6,
-    'learning_rate': 0.2,
-    'n_estimators': 100,
-    'verbosity': 0
-}
-
-finalist_model = xgb.train(params, dtrain_fin, num_boost_round=100)
-
 st.set_page_config(layout="wide")
 st.markdown(
             """
@@ -159,6 +107,58 @@ if class_24 is not None:
 
 # Predict button
 if st.button("Predict Final Score"):
+    data = pd.read_csv('wgi_train.csv')
+    model_data = data[['ID', 'Round_Numb','Class Numb',
+                      'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
+                      'Subtot_Sc', 'Seed Score',
+                      'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place',
+                      'Fin Score']]
+    
+    model_data = model_data.dropna()
+    X = model_data.iloc[:,1:-1]
+    y = model_data.iloc[:, -1]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05, random_state=15)
+    
+    dtrain = xgb.DMatrix(X_train, label=y_train)
+    dtest = xgb.DMatrix(X_test, label=y_test)
+    
+    # Set the parameters for XGBoost
+    params = {
+        'objective': 'reg:squarederror',
+        'max_depth': 6,
+        'learning_rate': 0.2,
+        'n_estimators': 100,
+        'verbosity': 0
+    }
+    
+    # Train the model
+    model = xgb.train(params, dtrain, num_boost_round=100)
+    
+    fin_data = data[['ID', 'Round_Numb','Class Numb',
+                      'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
+                      'Subtot_Sc', 'Seed Score',
+                      'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place',
+                      'Finalist']]
+    
+    fin_data = fin_data.dropna()
+    X_fin = fin_data.iloc[:,1:-1]
+    y_fin = fin_data.iloc[:, -1]
+    X_train_fin, X_test_fin, y_train_fin, y_test_fin = train_test_split(X_fin, y_fin, test_size=0.05, random_state=15)
+    
+    dtrain_fin = xgb.DMatrix(X_train_fin, label=y_train_fin)
+    dtest_fin = xgb.DMatrix(X_test_fin, label=y_test_fin)
+    
+    # Set the parameters for XGBoost
+    fin_params = {
+        'objective': 'reg:squarederror',
+        'max_depth': 6,
+        'learning_rate': 0.2,
+        'n_estimators': 100,
+        'verbosity': 0
+    }
+    
+    finalist_model = xgb.train(params, dtrain_fin, num_boost_round=100)
+  
     input = pd.DataFrame([{'Round_Numb':round_num ,'Class Numb':class_25_num,
                           'EA_Tot_Sc':ea_tot_sc, 'MA_Tot_Sc':ma_tot_sc, 'DA_Tot_Sc':da_tot_sc, 
                           'Tot_GE_Sc':tot_ge_sc, 'Subtot_Sc':subtot_sc, 'Seed Score':seed, 
