@@ -107,6 +107,8 @@ if class_24 is not None:
 
 # Predict button
 if st.button("Predict Final Score"):
+    st.write("Calculating....this may take a few minutes...")
+    st.cache_data(ttl=3600)
     data = pd.read_csv('wgi_train.csv')
     model_data = data[['ID', 'Round_Numb','Class Numb',
                       'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
