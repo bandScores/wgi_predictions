@@ -95,6 +95,8 @@ if st.session_state.captions == "Yes":
         ma_tot_sc = st.number_input("Movement Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
         tot_ge_sc = st.number_input("Total GE Score (out of 40 points)", min_value=0.0, max_value=40.0, format="%0.2f")
     subtot_sc = ea_tot_sc + ma_tot_sc + da_tot_sc + tot_ge_sc
+    with col1:
+        st.write('Total Subtotal score: ', "{:.3f}".format(subtot_sc))
 else:
     with col1:
         subtot_sc = st.number_input("Subtotal Score", min_value=0.0, max_value=100.0, format="%0.2f")
