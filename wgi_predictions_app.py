@@ -53,14 +53,35 @@ def train_models(data):
 data = load_data()
 score_model, finalist_model = train_models(data)
 
-if "user_inputs" not in st.session_state:
-    st.session_state.user_inputs = {}
+# --- Set Page Layout ---
+st.set_page_config(layout="wide")
 
-def update_inputs(key, value):
-    st.session_state.user_inputs[key] = value
+# --- Initialize session_state Defaults ---
+if "class_25" not in st.session_state:
+    st.session_state.class_25 = None
+if "round" not in st.session_state:
+    st.session_state.round = "Prelims"
+if "week" not in st.session_state:
+    st.session_state.week = None
+if "captions" not in st.session_state:
+    st.session_state.captions = "No"
 
-# UI Inputs
+# --- Callback Functions (Defined Before UI) ---
+def update_class():
+    st.session_state.class_25 = st.session_state.class_select
+
+def update_round():
+    st.session_state.round = st.session_state.round_select
+
+def update_week():
+    st.session_state.week = st.session_state.week_select
+
+def update_captions():
+    st.session_state.captions = st.session_state.captions_select
+
+# --- UI Elements ---
 classes = ['Independent A', 'Scholastic A', 'Independent Open', 'Scholastic Open', 'Independent World', 'Scholastic World']
+weeks = ['Week 1: 2/8-9', 'Week 2: 2/15-16', 'Week 3: 2/22-23', 'Week 4: 3/1-2', 'Week 5: 3/8-9', 'Week 6: 3/15-16', 'Week 7: 3/22-23']
 
 col1, col2, col3 = st.columns((1, 1, 1))
 with col1:
@@ -71,7 +92,7 @@ with col2:
     st.selectbox("Show Week", weeks, key="week_select", index=None, on_change=update_week)
     st.radio("Enter Caption Scores?", ["Yes", "No"], key="captions_select", on_change=update_captions)
 
-# Caption Inputs (only show if needed)
+# --- Caption Inputs ---
 if st.session_state.captions == "Yes":
     with col1:
         ea_tot_sc = st.number_input("EA Score", min_value=0.0, max_value=20.0, format="%0.2f")
@@ -107,5 +128,5 @@ if st.button("Predict Final Score"):
     finalist_prob = finalist_model.predict(dinput)[0] if finalist_model else "Model not available"
     finalist_percentage = min(finalist_prob * 100, 100)
 
-    st.subheader(f"Predicted Final Score: {prediction:.2f}")
+    st.subheader(f"Predicted Final Score: {prediction:.3f}")
     st.subheader(f"Odds of Making Finals: {finalist_percentage:.2f}%")
