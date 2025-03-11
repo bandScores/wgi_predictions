@@ -4,19 +4,6 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 
-st.set_page_config(layout="wide")
-st.markdown(
-            """
-            <style>
-            [data-testid="stElementToolbar"] {
-                display: none;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-
-
 st.write("Loading model and data.... this may take a few minutes...")
 my_bar = st.progress(0, text="Loading progress")
 
@@ -78,6 +65,18 @@ fin_params = {
 
 finalist_model = xgb.train(params, dtrain_fin, num_boost_round=100)
 my_bar.progress(100, text="Loading progress")
+
+st.set_page_config(layout="wide")
+st.markdown(
+            """
+            <style>
+            [data-testid="stElementToolbar"] {
+                display: none;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
 
 # st.title("WGI Predictions App")
 # st.write("This app shows recaps for Bands of America events from the 2024 season. Use the drop down selectors to filter by event or show round, or leave them empty to view all scores. Click on a column header to cycle through sorting options. When hovering over a column header, click the hamburger menu on the right to view more filtering options. \n")
