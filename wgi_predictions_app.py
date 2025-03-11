@@ -54,6 +54,8 @@ if "week" not in st.session_state:
     st.session_state.week = None
 if "captions" not in st.session_state:
     st.session_state.captions = "No"
+if "competed" not in st.session_state:
+    st.session_state.competed = "Yes"
 
 # --- Callback Functions (Must Be Defined Before UI) ---
 def update_class():
@@ -102,7 +104,6 @@ else:
     tot_ge_sc = subtot_sc * 0.4
 
 # --- Previous Year Inputs ---
-#st.session_state.competed = "Yes"
 with col1:
     prv_class = st.selectbox("Previous Class", classes, index=None)
     st.radio("Did this guard compete last season?", ["No", "Yes"], key="competed_select", on_change=update_previous, horizontal=True)
