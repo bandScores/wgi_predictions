@@ -1,57 +1,49 @@
 import streamlit as st
 import pandas as pd
 import xgboost as xgb
-from sklearn.model_selection import train_test_split
 
-st.set_page_config(layout="wide")
-
-# Hide Streamlit Toolbar
-st.markdown(
-    """
-    <style>
-    [data-testid="stElementToolbar"] { display: none; }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
+# --- Load Data & Models ---
 @st.cache_data
 def load_data():
-    data = pd.read_csv('wgi_train.csv')
-    return data.dropna()
+    return pd.read_csv('wgi_train.csv')
 
 @st.cache_resource
-def train_models(data):
-    # Prepare data for final score prediction
-    model_data = data[['Round_Numb', 'Class Numb', 'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 
-                       'Tot_GE_Sc', 'Subtot_Sc', 'Seed Score', 'Prv Class', 
-                       'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place', 'Fin Score']]
+def load_models():
+    data = load_data()
+
+    # Regression Model (Predicts Final Score)
+    model_data = data[['Round_Numb', 'Class Numb', 'EA_Tot_Sc', 'MA_Tot_Sc', 
+                       'DA_Tot_Sc', 'Tot_GE_Sc', 'Subtot_Sc', 'Seed Score', 
+                       'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place', 
+                       'Fin Score']].dropna()
     
-    X = model_data.iloc[:, :-1]
-    y = model_data.iloc[:, -1]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05, random_state=15)
+    X_train = model_data.iloc[:, :-1]
+    y_train = model_data.iloc[:, -1]
     
     dtrain = xgb.DMatrix(X_train, label=y_train)
-    params = {'objective': 'reg:squarederror', 'max_depth': 6, 'learning_rate': 0.2, 'n_estimators': 100, 'verbosity': 0}
-    score_model = xgb.train(params, dtrain, num_boost_round=100)
     
-    # Prepare data for finalist prediction
-    fin_data = data[['Round_Numb', 'Class Numb', 'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 
-                     'Tot_GE_Sc', 'Subtot_Sc', 'Seed Score', 'Prv Class', 
-                     'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place', 'Finalist']]
+    params = {'objective': 'reg:squarederror', 'max_depth': 6, 'learning_rate': 0.2}
+    model = xgb.train(params, dtrain, num_boost_round=100)
     
-    X_fin = fin_data.iloc[:, :-1]
-    y_fin = fin_data.iloc[:, -1]
-    X_train_fin, X_test_fin, y_train_fin, y_test_fin = train_test_split(X_fin, y_fin, test_size=0.05, random_state=15)
+    # Classification Model (Predicts Odds of Making Finals)
+    fin_data = data[['Round_Numb', 'Class Numb', 'EA_Tot_Sc', 'MA_Tot_Sc', 
+                     'DA_Tot_Sc', 'Tot_GE_Sc', 'Subtot_Sc', 'Seed Score', 
+                     'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place', 
+                     'Finalist']].dropna()
+    
+    X_train_fin = fin_data.iloc[:, :-1]
+    y_train_fin = fin_data.iloc[:, -1]
     
     dtrain_fin = xgb.DMatrix(X_train_fin, label=y_train_fin)
+    
     finalist_model = xgb.train(params, dtrain_fin, num_boost_round=100)
+    
+    return model, finalist_model
 
-    return score_model, finalist_model
+model, finalist_model = load_models()
 
-# Load data and train models once
-data = load_data()
-score_model, finalist_model = train_models(data)
+# --- Set Page Layout ---
+st.set_page_config(layout="wide")
 
 # --- Initialize session_state Defaults ---
 if "class_25" not in st.session_state:
@@ -63,7 +55,7 @@ if "week" not in st.session_state:
 if "captions" not in st.session_state:
     st.session_state.captions = "No"
 
-# --- Callback Functions (Defined Before UI) ---
+# --- Callback Functions (Must Be Defined Before UI) ---
 def update_class():
     st.session_state.class_25 = st.session_state.class_select
 
@@ -87,7 +79,7 @@ with col1:
 
 with col2:
     st.selectbox("Show Week", weeks, key="week_select", index=None, on_change=update_week)
-    st.radio("Enter Caption Scores?", ["No", "Yes"], key="captions_select", on_change=update_captions)
+    st.radio("Enter Caption Scores?", ["Yes", "No"], key="captions_select", on_change=update_captions)
 
 # --- Caption Inputs ---
 if st.session_state.captions == "Yes":
@@ -106,6 +98,14 @@ else:
     da_tot_sc = subtot_sc * 0.2
     tot_ge_sc = subtot_sc * 0.4
 
+# --- Previous Year Inputs ---
+with col1:
+    prv_class = st.selectbox("Previous Class", classes, index=None)
+    prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Finals"], horizontal=True)
+with col2:
+    prv_fin_score = st.number_input("Previous Final Score", min_value=0.0, max_value=100.0, format="%0.2f")
+    prv_fin_place = st.number_input("Previous Final Placement", min_value=1, max_value=50, step=1)
+
 # --- Seed Score Calculation ---
 week_offsets = {"1": 9.0, "2": 7.5, "3": 6.0, "4": 4.5, "5": 3.0, "6": 1.5, "7": 0.0}
 week_num = st.session_state.week.split()[1].strip(":") if st.session_state.week else "7"
@@ -118,6 +118,9 @@ if st.button("Predict Final Score"):
         'Class Numb': classes.index(st.session_state.class_25) + 1 if st.session_state.class_25 else 0,
         'EA_Tot_Sc': ea_tot_sc, 'MA_Tot_Sc': ma_tot_sc, 'DA_Tot_Sc': da_tot_sc,
         'Tot_GE_Sc': tot_ge_sc, 'Subtot_Sc': subtot_sc, 'Seed Score': seed,
+        'Prv Class': classes.index(prv_class) + 1 if prv_class else 0,
+        'Prv WC Round': 1 if prv_wc_round == "Prelims" else 3,
+        'Prv Fin Score': prv_fin_score, 'Prv Fin Place': prv_fin_place
     }])
 
     dinput = xgb.DMatrix(input_data)
@@ -125,5 +128,5 @@ if st.button("Predict Final Score"):
     finalist_prob = finalist_model.predict(dinput)[0] if finalist_model else "Model not available"
     finalist_percentage = min(finalist_prob * 100, 100)
 
-    st.subheader(f"Predicted Final Score: {prediction:.3f}")
+    st.subheader(f"Predicted Final Score: {prediction:.2f}")
     st.subheader(f"Odds of Making Finals: {finalist_percentage:.2f}%")
