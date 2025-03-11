@@ -69,7 +69,7 @@ def update_captions():
     st.session_state.captions = st.session_state.captions_select
 
 def update_previous():
-    st.session_state.competed_last_season = st.session_state.competed_select
+    st.session_state.competed = st.session_state.competed_select
 
 # --- UI Elements ---
 classes = ['Independent A', 'Scholastic A', 'Independent Open', 'Scholastic Open', 'Independent World', 'Scholastic World']
@@ -106,7 +106,7 @@ with col1:
     prv_class = st.selectbox("Previous Class", classes, index=None)
     st.radio("Did this guard compete last season?", ["Yes", "No"], key="competed_select", on_change=update_previous, horizontal=True)
 
-if st.session_state.competed_last_season == "Yes":
+if st.session_state.competed == "Yes":
     with col1:
         prv_wc_round = st.radio("Previous WC Round", ["Prelims", "Finals"], horizontal=True)
     with col2:
