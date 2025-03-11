@@ -107,7 +107,7 @@ else:
     da_tot_sc = subtot_sc * 0.2
     tot_ge_sc = subtot_sc * 0.4
     with col2:
-        st.write('\n\n\n')
+        st.write('\n\n\n\n\n')
 
 # --- Previous Year Inputs ---
 with col2:
