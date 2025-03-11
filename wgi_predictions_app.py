@@ -112,7 +112,7 @@ else:
 # --- Previous Year Inputs ---
 with col2:
     st.write('')
-with col1:
+with col2:
     prv_class = st.selectbox("Previous Class", classes, index=None)
     st.radio("Did this guard compete last season?", ["Yes", "No"], key="competed_select", on_change=update_previous, horizontal=True)
     if st.session_state.competed == "Yes":
