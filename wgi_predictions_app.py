@@ -5,68 +5,69 @@ from sklearn.model_selection import train_test_split
 import xgboost as xgb
 
 st.write("Loading model and data.... this may take a few minutes...")
-my_bar = st.progress(0, text="Loading progress")
 
-st.cache_data(ttl=3600)
-data = pd.read_csv('wgi_train.csv')
-model_data = data[['ID', 'Round_Numb','Class Numb',
-'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
-'Subtot_Sc', 'Seed Score',
-'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place',
-'Fin Score']]
-my_bar.progress(10, text="Loading progress")
+@st.cache_data(ttl=3600)
+def load_data():
+   data = pd.read_csv('wgi_train.csv')
+   return data
+st.write(data)
 
-model_data = model_data.dropna()
-X = model_data.iloc[:,1:-1]
-y = model_data.iloc[:, -1]
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05, random_state=15)
+@st.cache_resource
+def load_model():
+            model_data = data[['ID', 'Round_Numb','Class Numb',
+            'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
+            'Subtot_Sc', 'Seed Score',
+            'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place',
+            'Fin Score']]
+            
+            model_data = model_data.dropna()
+            X = model_data.iloc[:,1:-1]
+            y = model_data.iloc[:, -1]
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05, random_state=15)
+            
+            dtrain = xgb.DMatrix(X_train, label=y_train)
+            dtest = xgb.DMatrix(X_test, label=y_test)
+            
+            # Set the parameters for XGBoost
+            params = {
+            'objective': 'reg:squarederror',
+            'max_depth': 6,
+            'learning_rate': 0.2,
+            'n_estimators': 100,
+            'verbosity': 0
+            }
+            
+            # Train the model
+            st.cache_resource()
+            model = xgb.train(params, dtrain, num_boost_round=100)
+            
+            fin_data = data[['ID', 'Round_Numb','Class Numb',
+            'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
+            'Subtot_Sc', 'Seed Score',
+            'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place',
+            'Finalist']]
+            
+            fin_data = fin_data.dropna()
+            X_fin = fin_data.iloc[:,1:-1]
+            y_fin = fin_data.iloc[:, -1]
+            X_train_fin, X_test_fin, y_train_fin, y_test_fin = train_test_split(X_fin, y_fin, test_size=0.05, random_state=15)
+            
+            dtrain_fin = xgb.DMatrix(X_train_fin, label=y_train_fin)
+            dtest_fin = xgb.DMatrix(X_test_fin, label=y_test_fin)
+            
+            # Set the parameters for XGBoost
+            fin_params = {
+            'objective': 'reg:squarederror',
+            'max_depth': 6,
+            'learning_rate': 0.2,
+            'n_estimators': 100,
+            'verbosity': 0
+            }
+            
+            finalist_model = xgb.train(params, dtrain_fin, num_boost_round=100)
+            return model, finalist_model
 
-dtrain = xgb.DMatrix(X_train, label=y_train)
-dtest = xgb.DMatrix(X_test, label=y_test)
-my_bar.progress(20, text="Loading progress")
-
-# Set the parameters for XGBoost
-params = {
-'objective': 'reg:squarederror',
-'max_depth': 6,
-'learning_rate': 0.2,
-'n_estimators': 100,
-'verbosity': 0
-}
-
-# Train the model
-st.cache_resource()
-model = xgb.train(params, dtrain, num_boost_round=100)
-my_bar.progress(40, text="Loading progress")
-
-fin_data = data[['ID', 'Round_Numb','Class Numb',
-'EA_Tot_Sc', 'MA_Tot_Sc', 'DA_Tot_Sc', 'Tot_GE_Sc',
-'Subtot_Sc', 'Seed Score',
-'Prv Class', 'Prv WC Round', 'Prv Fin Score', 'Prv Fin Place',
-'Finalist']]
-
-fin_data = fin_data.dropna()
-X_fin = fin_data.iloc[:,1:-1]
-y_fin = fin_data.iloc[:, -1]
-X_train_fin, X_test_fin, y_train_fin, y_test_fin = train_test_split(X_fin, y_fin, test_size=0.05, random_state=15)
-my_bar.progress(60, text="Loading progress")
-
-dtrain_fin = xgb.DMatrix(X_train_fin, label=y_train_fin)
-dtest_fin = xgb.DMatrix(X_test_fin, label=y_test_fin)
-my_bar.progress(80, text="Loading progress")
-
-# Set the parameters for XGBoost
-fin_params = {
-'objective': 'reg:squarederror',
-'max_depth': 6,
-'learning_rate': 0.2,
-'n_estimators': 100,
-'verbosity': 0
-}
-
-st.cache_resource()
-finalist_model = xgb.train(params, dtrain_fin, num_boost_round=100)
-my_bar.progress(100, text="Loading progress")
+model = load_model()
 
 st.set_page_config(layout="wide")
 st.markdown(
