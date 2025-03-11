@@ -87,7 +87,7 @@ with col1:
 
 with col2:
     st.selectbox("Show Week", weeks, key="week_select", index=None, on_change=update_week)
-    st.radio("Enter Caption Scores?", ["Yes", "No"], key="captions_select", on_change=update_captions)
+    st.radio("Enter Caption Scores?", ["No", "Yes"], key="captions_select", on_change=update_captions)
 
 # --- Caption Inputs ---
 if st.session_state.captions == "Yes":
