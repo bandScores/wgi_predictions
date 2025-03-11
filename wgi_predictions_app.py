@@ -59,7 +59,10 @@ classes = ['Independent A', 'Scholastic A', 'Independent Open', 'Scholastic Open
 with st.sidebar:
     class_25 = st.selectbox('2025 Guard Class', classes, key='class_25')
     round_num = 1 if st.radio("Show Round", ['Prelims', 'Finals'], key='round') == 'Prelims' else 3
-    week = st.selectbox("Show Week", [f"Week {i}: {date}" for i, date in enumerate(["2/8-9", "2/15-16", "2/22-23", "3/1-2", "3/8-9", "3/15-16", "3/22-23"], 1)], key='week')
+    week = st.selectbox("What show week did the score that you're entering occur in?", 
+                      ['Week 1: 2/8-9','Week 2: 2/15-16', 'Week 3: 2/22-23', 'Week 4: 3/1-2',
+                       'Week 5: 3/8-9', 'Week 6: 3/15-16', 'Week 7: 3/22-23'], 
+                      placeholder='Week 1: 2/8-9', index=None)
     caption_choice = st.radio('Enter caption scores?', ['Yes', 'No'], key='caption')
 
 # Caption Inputs
@@ -76,8 +79,20 @@ else:
 st.write(f'Total Subtotal score: {subtot_sc:.3f}')
 
 # Calculate Seed Score
-week_offsets = [9.0, 7.5, 6.0, 4.5, 3.0, 1.5, 0.0]
-seed = subtot_sc + week_offsets[int(week.split()[1]) - 1]
+if week == 'Week 1: 2/8-9':
+    seed = subtot_sc + 9.0
+if week == 'Week 2: 2/15-16':
+    seed = subtot_sc + 7.5
+if week == 'Week 3: 2/22-23':
+    seed = subtot_sc + 6.0
+if week == 'Week 4: 3/1-2':
+    seed = subtot_sc + 4.5
+if week == 'Week 5: 3/8-9':
+    seed = subtot_sc + 3.0
+if week == 'Week 6: 3/15-16':
+    seed = subtot_sc + 1.5
+if week == 'Week 7: 3/22-23':
+    seed = subtot_sc
 
 # Previous Year Inputs
 class_24 = st.selectbox('2024 Guard Class', classes, key='class_24')
