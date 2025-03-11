@@ -1,18 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import Ridge
-from sklearn.metrics import r2_score
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error
 import xgboost as xgb
 
 data = pd.read_csv('wgi_train.csv')
