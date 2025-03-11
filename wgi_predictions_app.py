@@ -108,6 +108,7 @@ else:
     tot_ge_sc = subtot_sc * 0.4
     with col2:
         st.write('')
+        st.write('')
 
 # --- Previous Year Inputs ---
 with col2:
