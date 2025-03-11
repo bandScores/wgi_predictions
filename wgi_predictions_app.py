@@ -64,15 +64,12 @@ classes = ['Independent A', 'Scholastic A', 'Independent Open', 'Scholastic Open
 
 col1, col2, col3 = st.columns((1, 1, 1))
 with col1:
-    class_25 = st.selectbox("2025 Class", classes, index=None, on_change=update_inputs)
-    round_2025 = st.radio("Round", ["Prelims", "Finals"], on_change=update_inputs)
+    class_25 = st.selectbox("2025 Class", classes, index=None, on_change=update_inputs, args=("class_25", class_25))
+    round_2025 = st.radio("Round", ["Prelims", "Finals"], on_change=update_inputs, args=("round", round_2025))
 
 with col2:
-    week = st.selectbox("What show week did the score that you're entering occur in?", 
-                      ['Week 1: 2/8-9','Week 2: 2/15-16', 'Week 3: 2/22-23', 'Week 4: 3/1-2',
-                       'Week 5: 3/8-9', 'Week 6: 3/15-16', 'Week 7: 3/22-23'], 
-                      placeholder='Week 1: 2/8-9', index=None)
-    captions = st.radio("Enter Caption Scores?", ["Yes", "No"], on_change=update_inputs)
+    week = st.selectbox("Show Week", weeks, index=None, on_change=update_inputs, args=("week", week))
+    captions = st.radio("Enter Caption Scores?", ["Yes", "No"], on_change=update_inputs, args=("captions", captions))
 
 # Caption Inputs (only show if needed)
 if st.session_state.user_inputs.get("captions") == "Yes":
