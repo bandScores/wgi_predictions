@@ -1,5 +1,5 @@
 streamlit
 pandas
 numpy
-streamlit-aggrid
-st-gsheets-connection
+sklearn
+xgboost
