@@ -82,14 +82,14 @@ with col1:
     st.selectbox("Guard's competing class in 2025 season", classes, key="class_select", index=None, on_change=update_class)
     st.radio("Show Round the score is from", ["Prelims", "Finals"], key="round_select", on_change=update_round)
     st.selectbox("Show Week that the score is from", weeks, key="week_select", index=None, on_change=update_week)
-    st.radio("Enter Caption Scores?", ["No", "Yes"], key="captions_select", on_change=update_captions)
+    st.radio("Would you like to enter caption scores? (doing so improves accuracy)", ["No", "Yes"], key="captions_select", on_change=update_captions)
 
 # --- Caption Inputs ---
 if st.session_state.captions == "Yes":
     with col1:
         ea_tot_sc = st.number_input("Equipment Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
-        da_tot_sc = st.number_input("Design Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
         ma_tot_sc = st.number_input("Movement Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
+        da_tot_sc = st.number_input("Design Analysis Total Score (out of 20 points)", min_value=0.0, max_value=20.0, format="%0.2f")
         tot_ge_sc = st.number_input("Total GE Score (out of 40 points)", min_value=0.0, max_value=40.0, format="%0.2f")
         subtot_sc = ea_tot_sc + ma_tot_sc + da_tot_sc + tot_ge_sc
         st.write('Total Subtotal score: ', "{:.3f}".format(subtot_sc))
