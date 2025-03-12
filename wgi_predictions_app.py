@@ -110,7 +110,7 @@ with col1:
         with col1:
             prv_wc_round = st.radio("The furthest round that the guard advanced to at the 2024 World Championships", ["Prelims", "Semifinals", "Finals"], horizontal=True)
             prv_fin_score = st.number_input("The guard's final score at the 2024 World Championships", min_value=0.0, max_value=100.0, format="%0.2f")
-            prv_fin_place = st.number_input("The guard's overall placement in the furthest round at the 2024 World Championships", min_value=1, max_value=50, step=1)
+            prv_fin_place = st.number_input("The guard's overall placement in the furthest round at the 2024 World Championships", min_value=1, max_value=140, step=1)
             if prv_wc_round == "Prelims":
                 prv_wc_round = 1
             if prv_wc_round == "Semifinals":
