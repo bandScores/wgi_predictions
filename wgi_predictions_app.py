@@ -75,13 +75,13 @@ def update_previous():
 
 # --- UI Elements ---
 classes = ['Independent A', 'Scholastic A', 'Independent Open', 'Scholastic Open', 'Independent World', 'Scholastic World']
-weeks = ['Week 1: 2/8-9', 'Week 2: 2/15-16', 'Week 3: 2/22-23', 'Week 4: 3/1-2', 'Week 5: 3/8-9', 'Week 6: 3/15-16', 'Week 7: 3/22-23']
+weeks = ['Week 1: Feb 8-9', 'Week 2: Feb 15-16', 'Week 3: Feb 22-23', 'Week 4: March 1-2', 'Week 5: March 8-9', 'Week 6: March 15-16', 'Week 7: March 22-23']
 
 col1, col2, col3 = st.columns((1, 1, 1))
 with col2:
     st.selectbox("Guard's competing class in 2025 season", classes, key="class_select", index=None, on_change=update_class)
     st.radio("Show Round the score is from", ["Prelims", "Finals"], key="round_select", on_change=update_round)
-    st.selectbox("Show Week that the score is from", weeks, key="week_select", index=None, on_change=update_week)
+    st.selectbox("Date/Show Week that the score is from", weeks, key="week_select", index=None, on_change=update_week)
     st.radio("Would you like to enter caption scores? (doing so improves accuracy)", ["No", "Yes"], key="captions_select", on_change=update_captions)
 
 # --- Caption Inputs ---
